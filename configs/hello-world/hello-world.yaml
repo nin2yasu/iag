@@ -49,6 +49,6 @@ server:
 
 identity:
   ci_oidc:
-    client_id: "@/oidc/oidc-client-id"
-    client_secret: "@/oidc/oidc-client-secret"
-    hostname: "yourtenantid.ice.ibmcloud.com"
+    client_id: $OIDC_CLIENT_ID
+    client_secret: $OIDC_CLIENT_SECRET
+    hostname: $CI_TENANT_HOST
