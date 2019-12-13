@@ -47,11 +47,12 @@ openshift/create-certkey-secret.sh
 ```
 
 ### Deploy using local ConfigMap
+In this case you load your configuration into an entry of a ConfigMap object.  This ConfigMap is then mounted to the /var/iag/config directory of the IAG container.
 
 #### Create Config Map
 Create a config map containing your configuration:
 ```
-oc create configmap iag-config --from-file configs/hello-world/hello-world.yaml
+oc create configmap iag-config --from-file configs/hello-world/src/hello-world.yaml
 ```
 
 #### Install Template
@@ -59,7 +60,24 @@ Install the template:
 ```
 oc create -f openshift/iag-configmap-template.yaml
 ```
+
+#### Deploy Template
 Now open UI (e.g. https://localhost:8443), select project, and go to catalog. You will see icon for the application.  Click to deploy.  You can change parameters before deploy.  Parameters include CI Tenant Hostname and OIDC Client ID and Client Secret.
+
+### Deploy with Build from Source Repository
+In this case your configuration files are downloaded from a source repository and baked into a new Docker image by a BuildConfig.  The new image is loaded to an ImageStream which a DeploymentConfig then uses to create the IAG containers.
+
+A sample "Hello World" repository is pre-configured in the template parameters.
+
+#### Install Template
+Install the template:
+```
+oc create -f openshift/iag-build-template.yaml
+```
+
+#### Deploy Template
+Now open UI (e.g. https://localhost:8443), select project, and go to catalog. You will see icon for the application.  Click to deploy.  You can change parameters before deploy.  Parameters include CI Tenant Hostname and OIDC Client ID and Client Secret.
+
 
 ### Delete IAG Assets
 You can uninstall all assets associated with the IAG (iag is default app name) using command:
