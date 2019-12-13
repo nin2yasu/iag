@@ -10,7 +10,7 @@ You will need to configure a Custom Application with these settings:
   - Grant Types: Authorization Code
   - Redirect URL: <Route>/pkmsoidc (e.g. https://iag.127.0.0.1.nip.io/pkmsoidc)
 
-Once this application is created, you can get the Client ID and Client Secret which you will need to configured IAG.
+Once this application is created, you can get the Client ID and Client Secret which you will need to configure IAG.
 
 ## Hello World OpenShift Template
 A "Hello World" OpenShift template is provided which can be deployed to test the IAG.
@@ -19,11 +19,12 @@ A "Hello World" OpenShift template is provided which can be deployed to test the
 oc create -f openshift/iag-hello-world.yaml
 ```
 
-Once you have created this template, use the OpenShift console to deploy it.  You will need to complete the CI Tenant URI, OIDC Client ID,
+Once you have created this template, use the OpenShift console to deploy it.  You will need to complete the CI Tenant Hostname, OIDC Client ID,
 and OIDC Client Secret in the template deployment wizard.
 
 Once deployed, use the Route to connect to the IAG.  You will be redirected to your Cloud Identity tenant to authenticate.
-You can request the `/cred-viewer` url to see the attributes provided by Cloud Identity.
+Once authenticated, you can request the `/cred-viewer` url to see the attributes provided by Cloud Identity.
+e.g. https://iag.127.0.0.1.nip.io/cred-viewer
 
 ## Generate a certificate and key
 With the exception of the Hello World OpenShift template, all other deployments in this repository expect to use a pre-created certificate+key for the IAG HTTPS connection.  In the common directory is a script which will create a certificate+private key for the front end of the application gateway.  This script will create the certificate with extended key usage and lifetime set so that it is accepted by latest Firefox and Chrome browsers.
@@ -73,7 +74,7 @@ oc delete configmap iag-config
 
 The contents of this repository are open-source under the Apache 2.0 licence.
 
-Copyright 2018 International Business Machines
+Copyright 2019 International Business Machines
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
