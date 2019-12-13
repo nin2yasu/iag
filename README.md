@@ -12,22 +12,8 @@ You will need to configure a Custom Application with these settings:
 
 Once this application is created, you can get the Client ID and Client Secret which you will need to configure IAG.
 
-## Hello World OpenShift Template
-A "Hello World" OpenShift template is provided which can be deployed to test the IAG.
-
-```
-oc create -f openshift/iag-hello-world.yaml
-```
-
-Once you have created this template, use the OpenShift console to deploy it.  You will need to complete the CI Tenant Hostname, OIDC Client ID,
-and OIDC Client Secret in the template deployment wizard.
-
-Once deployed, use the Route to connect to the IAG.  You will be redirected to your Cloud Identity tenant to authenticate.
-Once authenticated, you can request the `/cred-viewer` url to see the attributes provided by Cloud Identity.
-e.g. https://iag.127.0.0.1.nip.io/cred-viewer
-
 ## Generate a certificate and key
-With the exception of the Hello World OpenShift template, all other deployments in this repository expect to use a pre-created certificate+key for the IAG HTTPS connection.  In the common directory is a script which will create a certificate+private key for the front end of the application gateway.  This script will create the certificate with extended key usage and lifetime set so that it is accepted by latest Firefox and Chrome browsers.
+With the exception of the "Hello World" OpenShift template, all other deployments in this repository expect to use a pre-created certificate+key for the IAG HTTPS connection.  In the common directory is a script which will create a certificate+private key for the front end of the application gateway.  This script will create the certificate with extended key usage and lifetime set so that it is accepted by latest Firefox and Chrome browsers.
 
 ```
 common/create-cert.sh
@@ -38,15 +24,32 @@ The script also outputs the base64 encoding of this file which can be used in-li
 
 ## OpenShift
 OpenShift assets are in the openshift folder.
+If you want to build an OpenShift test system you can use these assets:
+  - OKD on Centos 7 (https://ibm.biz/isamopenshiftbuild)
+  - OKD on MacOS (https://ibm.biz/openshiftmac)
+
+### Hello World OpenShift Template
+A "Hello World" OpenShift template is provided which can be deployed to test the IAG.
+
+```
+oc create -f openshift/iag-hello-world.yaml
+```
+
+Once you have created this template, use the OpenShift console to deploy it.  you will need to complete the CI Tenant Hostname, OIDC Client ID,
+and OIDC Client Secret in the template deployment wizard.
+
+Once deployed, use the Route to connect to the IAG.  You will be redirected to your Cloud Identity tenant to authenticate.
+Once authenticated, you can request the `/cred-viewer` url to see the attributes provided by Cloud Identity.
+e.g. https://iag.127.0.0.1.nip.io/cred-viewer
 
 ### Common: Create a crypto secret
-A script is provided that will create a secret (iag-crypto) from the certkey.pem file in the common directory.
+A script is provided that will create a Secret (iag-crypto) from the certkey.pem file in the common directory.  If the certkey.pem file doesn't exist, the create-cert.sh script will be called to generate it.
 
 ```
-openshift/create-certkey-secret.sh
+openshift/create-crypto-secret.sh
 ```
 
-### Deploy using local ConfigMap
+### Option 1: Deploy using local ConfigMap
 In this case you load your configuration into an entry of a ConfigMap object.  This ConfigMap is then mounted to the /var/iag/config directory of the IAG container.
 
 #### Create Config Map
@@ -62,9 +65,9 @@ oc create -f openshift/iag-configmap-template.yaml
 ```
 
 #### Deploy Template
-Now open UI (e.g. https://localhost:8443), select project, and go to catalog. You will see icon for the application.  Click to deploy.  You can change parameters before deploy.  Parameters include CI Tenant Hostname and OIDC Client ID and Client Secret.
+Now open the OpenShift UI (e.g. https://localhost:8443), select project, and go to catalog. You will see icon for the application.  Click to deploy.  You can change parameters before deploy.  Parameters include CI Tenant Hostname and OIDC Client ID and Client Secret.
 
-### Deploy with Build from Source Repository
+### Option 2: Deploy with Build from Source Repository
 In this case your configuration files are downloaded from a source repository and baked into a new Docker image by a BuildConfig.  The new image is loaded to an ImageStream which a DeploymentConfig then uses to create the IAG containers.
 
 A sample "Hello World" repository is pre-configured in the template parameters.
@@ -76,10 +79,10 @@ oc create -f openshift/iag-build-template.yaml
 ```
 
 #### Deploy Template
-Now open UI (e.g. https://localhost:8443), select project, and go to catalog. You will see icon for the application.  Click to deploy.  You can change parameters before deploy.  Parameters include CI Tenant Hostname and OIDC Client ID and Client Secret.
+Now open the OpenShift UI (e.g. https://localhost:8443), select project, and go to catalog. You will see icon for the application.  Click to deploy.  You can change parameters before deploy.  Parameters include CI Tenant Hostname and OIDC Client ID and Client Secret.
 
 
-### Delete IAG Assets
+### Clean up IAG Assets
 You can uninstall all assets associated with the IAG (iag is default app name) using command:
 ```
 oc delete all -l app=iag
