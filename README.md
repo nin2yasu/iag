@@ -1,5 +1,5 @@
 # IBM Application Gateway Deployment Assets
-These are my work-in-progress assets for deploying IBM Application Gateway (IAG).
+These are my work-in-progress assets for deploying IBM Application Gateway (IAG) Tech Preview.
 
 ## Cloud Identity configuration
 The IBM Application Gateway requires an IBM Cloud Identity Tenant for authentication.
