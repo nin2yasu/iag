@@ -8,7 +8,7 @@ For information on setting up a free trial tenant, check out https://ibm.biz/clo
 You will need to configure a Custom Application with these settings:
   - Sign-in Method: Open ID Connect 1.0
   - Grant Types: Authorization Code
-  - Redirect URL: <Route>/pkmsoidc (e.g. https://iag.127.0.0.1.nip.io/pkmsoidc)
+  - Redirect URL: \<Route\>/pkmsoidc (e.g. https://iag.127.0.0.1.nip.io/pkmsoidc)
 
 Once this application is created, you can get the Client ID and Client Secret which you will need to configure IAG.
 
