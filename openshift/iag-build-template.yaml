@@ -86,7 +86,7 @@ objects:
             - iag
           from:
             kind: ImageStreamTag
-            name: 'iag:current'
+            name: '${APP_NAME}:current'
       - type: ConfigChange
     template:
       metadata:
