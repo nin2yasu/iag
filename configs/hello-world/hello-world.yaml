@@ -1,0 +1,54 @@
+version: 19.12
+
+#
+# Configure an IAG container with a very basic configuration.  This
+# configuration will simply define a server certificate, configure an IBM
+# Cloud Identity tenant as the identity provider, and enable the inbuilt
+# credential viewer application.
+#
+
+#
+# Specify a server certificate to be used by the container.  The server
+# certificate was created using an openssl command:
+#  openssl req -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 \
+#        -out cert.pem
+#
+# The key.pem and cert.pem files were then combined into a single file:
+#  cat cert.pem key.pem > test-iag.cer
+#
+# To remove the dependency on an external file a base-64 representation of the
+# certificate can be embedded within this yaml, where the base-64 encoded
+# certificate is prefixed with 'B64:', for example: "B64:PGhy4KICAgIDxoND5...."
+#
+# If no certificate is specified a self-signed certificate will be
+# automatically created and used by the container.
+#
+
+server:
+  ssl:
+    front_end:
+      certificate: "@crypto/front-end-cert-key"
+  #
+  # Enable the inbuilt credential viewer application.  The 'enable_html'
+  # configuration entry will control whether the HTML file is enabled in
+  # addition to the JSON API.
+  #
+
+  local_applications:
+    cred_viewer:
+      path_segment: "cred-viewer"
+      enable_html: true
+
+#
+# Specify an IBM Cloud Identity tenant as the identity provider for the
+# container.  Please note that the values provided below are for illustrative
+# purposes only and don't reflect a real tenant.  A free tenant can be created
+# using the instructions found at the following URL:
+#    https://www.ibm.com/us-en/marketplace/cloud-identity-for-consumers
+#
+
+identity:
+  ci_oidc:
+    client_id: "@/oidc/oidc-client-id"
+    client_secret: "@/oidc/oidc-client-secret"
+    hostname: "yourtenantid.ice.ibmcloud.com"
