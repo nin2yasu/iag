@@ -83,7 +83,7 @@ objects:
         imageChangeParams:
           automatic: true
           containerNames:
-            - iag
+            - ${APP_NAME}
           from:
             kind: ImageStreamTag
             name: '${APP_NAME}:current'
