@@ -22,6 +22,40 @@ common/create-cert.sh
 A certkey.pem file is created which can be mounted to the IAG container (either via a host mount or via a secret).
 The script also outputs the base64 encoding of this file which can be used in-line in a configuration file.
 
+## Docker
+Native Docker assets are in the docker folder.
+If you want to build a Docker test system you can use this asset:
+  - https://ibm.biz/isamdockerbuild
+
+### Create docker.properties file
+The iag-run.sh script reads OIDC information from docker/docker.properties file.  Copy the sample file:
+```
+cp docker/docker.properties.sample docker/docker.properties
+```
+and then edit `docker\docker.properties` and fill in your information.
+
+### Run IAG
+A script is provided for starting the IAG in a native Docker container.  This script has the following usage:
+```
+docker/iag-run.sh <config-directory> <publish host>:<port>
+```
+
+For example:
+```
+docker/iag-run.sh hello-world 127.0.0.1:443
+```
+
+### Clean up Docker
+Stop and remove the IAG docker container:
+```
+docker rm -f iag-<config name>
+```
+
+Clean up the bind mount directories:
+```
+rm -rf docker/*.mount
+```
+
 ## OpenShift
 OpenShift assets are in the openshift folder.
 If you want to build an OpenShift test system you can use these assets:

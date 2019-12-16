@@ -4,13 +4,15 @@ metadata:
   creationTimestamp: null
   name: ibm-app-gateway-configmap
   annotations:
-    openshift.io/display-name: IBM Application Gateway
+    openshift.io/display-name: IBM Application Gateway (ConfigMap)
     iconClass: icon-sso
-    description: >-
-      The IBM Application Gateway (IAG) provides a containerized secure Web
-      Reverse proxy which is designed to sit in front of your application,
-      seamlessly adding authentication and authorization protection to your
-      application.
+    description: |
+      The IBM Application Gateway (IAG) provides a containerized secure Web Reverse proxy which is designed to sit in front of your application, seamlessly adding authentication and authorization protection to your application.
+
+      This template mounts the specified ConfigMap which must contain required configuration files.  This ConfigMap must exist.  It can be created from a local file using:
+        oc create configmap <name> --from-file=<file>
+
+      The specified crypto Secret must exist and contain certificate and key concatenated in value of front-end-cert-key key.
 objects:
 - apiVersion: v1
   kind: Secret
@@ -169,9 +171,8 @@ parameters:
     name: APP_NAME
     value: iag
   - displayName: DNS Name
-    description: Fully Qualified DNS Name for Route
+    description: Fully Qualified DNS Name for Route (uses default if left blank)
     name: DNS_NAME
-    value: www.iamlab.ibm.com
   - displayName: Config Map
     description: Existing Config Map for configuration
     name: CONFIG_MAP
