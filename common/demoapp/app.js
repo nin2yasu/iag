@@ -55,7 +55,6 @@ app.use((req, _res, next) => {
     const b64auth = (req.headers.authorization || '').split(' ')[1] || ''
     const [_login, password] = new Buffer.from(b64auth, 'base64').toString().split(':')
 
-    console.log("*"+password+"*");
     // Verify login and password are set and correct
     // if (login && password && login === auth.login && password === auth.password && req.headers.iv_user) {
 
