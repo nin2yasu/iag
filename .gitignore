@@ -3,5 +3,7 @@ common/demoapp/*.pem
 config.properties
 mounts
 node_modules
+
 common/secret_files/*
 common/env_files/*
+!*.keep
