@@ -51,7 +51,7 @@ objects:
       identity:
         ci_oidc:
           client_id: $OIDC_CLIENT_ID
-          client_secret: $OIDC_CLIENT_SECRET
+          client_secret: $S_OIDC_CLIENT_SECRET
           hostname: $CI_TENANT_HOST
 - apiVersion: v1
   kind: Secret
@@ -62,7 +62,7 @@ objects:
   type: Opaque
   stringData:
     oidc-client-id: ${OIDC_CLIENT_ID}
-    oidc-client-secret:  ${OIDC_CLIENT_SECRET}
+    oidc-client-secret:  ${S_OIDC_CLIENT_SECRET}
     oidc-hostname: ${CI_TENANT_HOST}
 - apiVersion: apps/v1
   kind: Deployment
@@ -114,7 +114,7 @@ objects:
               secretKeyRef:
                 key: oidc-client-id
                 name: ${APP_NAME}-oidc
-          - name: OIDC_CLIENT_SECRET
+          - name: S_OIDC_CLIENT_SECRET
             valueFrom:
               secretKeyRef:
                 key: oidc-client-secret
@@ -215,7 +215,7 @@ parameters:
     name: OIDC_CLIENT_ID
   - displayName: OIDC Client Secret
     description: Client Secret from Cloud Identity Application definition
-    name: OIDC_CLIENT_SECRET
+    name: S_OIDC_CLIENT_SECRET
   - displayName: Language
     description: Language for log messages (C = English)
     name: LANGUAGE

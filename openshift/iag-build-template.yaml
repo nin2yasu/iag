@@ -11,7 +11,7 @@ metadata:
 
       This template generates a BuildConfig which downloads and builds from the specified repository and creates an ImageStream for the DeploymentConfig.
 
-      The specified crypto Secret must exist and contain certificate and key concatenated in value of front-end-cert-key key.
+      The specified crypto Secret must exist and contain certificate and key concatenated in value of iag.certkey.pem key.
 objects:
 - apiVersion: image.openshift.io/v1
   kind: ImageStream
@@ -53,17 +53,6 @@ objects:
       - type: Generic
         generic:
           secret: ${GENERIC_WEBHOOK_SECRET}
-- apiVersion: v1
-  kind: Secret
-  metadata:
-    name: ${APP_NAME}-oidc
-    labels:
-      app: ${APP_NAME}
-  type: Opaque
-  stringData:
-    oidc-client-id: ${OIDC_CLIENT_ID}
-    oidc-client-secret:  ${OIDC_CLIENT_SECRET}
-    oidc-hostname: ${CI_TENANT_HOST}
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
@@ -113,21 +102,11 @@ objects:
         - env:
           - name: LANG
             value: ${LANGUAGE}
-          - name: OIDC_CLIENT_ID
-            valueFrom:
-              secretKeyRef:
-                key: oidc-client-id
-                name: ${APP_NAME}-oidc
-          - name: OIDC_CLIENT_SECRET
-            valueFrom:
-              secretKeyRef:
-                key: oidc-client-secret
-                name: ${APP_NAME}-oidc
-          - name: CI_TENANT_HOST
-            valueFrom:
-              secretKeyRef:
-                key: oidc-hostname
-                name: ${APP_NAME}-oidc
+          envFrom:
+            - configMapRef:
+                name: ${CONFIGMAP_NAME}
+            - secretRef:
+                name: ${SECRET_NAME}
           image: ${APP_NAME}:current
           imagePullPolicy: IfNotPresent
           name: ${APP_NAME}
@@ -148,16 +127,21 @@ objects:
             initialDelaySeconds: 5
             periodSeconds: 10
           volumeMounts:
-          - mountPath: /var/iag/config/crypto
-            name: ${APP_NAME}-crypto
+          - mountPath: /var/iag/config/secret_files
+            name: ${APP_NAME}-secret-files
+          - mountPath: /var/iag/config/env_files
+            name: ${APP_NAME}-env-files
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         schedulerName: default-scheduler
         terminationGracePeriodSeconds: 30
         volumes:
-        - name: ${APP_NAME}-crypto
+        - name: ${APP_NAME}-secret-files
           secret:
-            secretName: ${CRYPTO_SECRET}
+            secretName: ${SECRET_NAME}
+        - name: ${APP_NAME}-env-files
+          configMap:
+            name: ${CONFIGMAP_NAME}
 - apiVersion: v1
   kind: Route
   metadata:
@@ -221,19 +205,14 @@ parameters:
     description: Directory within GitHub repo where config is found
     name: GITHUB_CONTEXT
     value: /configs/hello-world
-  - displayName: Cloud Identity Tenant Hostname
-    description: e.g. yourtenantid.ice.ibmcloud.com
-    name: CI_TENANT_HOST
-  - displayName: OIDC Client ID
-    description: Client ID from Cloud Identity Application definition
-    name: OIDC_CLIENT_ID
-  - displayName: OIDC Client Secret
-    description: Client Secret from Cloud Identity Application definition
-    name: OIDC_CLIENT_SECRET
-  - displayName: Crypto Secret
-    description: (Existing) Secret containing cert and key in front-end-cert-key key
-    name: CRYPTO_SECRET
-    value: iag-crypto
+  - displayName: Secret Name
+    description: (Existing) Secret containing sensitive files and variables referenced in config from repo.
+    name: SECRET_NAME
+    value: iag
+  - displayName: ConfigMap Name
+    description: (Existing) ConfigMap for files and variables referenced in config from repo.
+    name: CONFIGMAP_NAME
+    value: iag
   - displayName: Language
     description: Language for log messages (C = English)
     name: LANGUAGE

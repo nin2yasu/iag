@@ -13,31 +13,44 @@ if [ -z "$RUNDIR" ]; then
   exit 1  # fail
 fi
 
-if [ -f ${RUNDIR}/docker/docker.properties ];then
-  . ${RUNDIR}/docker/docker.properties
+if [ -f ${RUNDIR}/common/config.properties ];then
+  . ${RUNDIR}/common/config.properties
 else
-  echo "Couldn't find ${RUNDIR}/docker/docker.properties"
+  echo "Couldn't find ${RUNDIR}/common/config.properties"
   exit 1 #Fail
 fi
 
+if [ ! -d ${RUNDIR}/docker/mounts ];then
+  mkdir ${RUNDIR}/docker/mounts
+fi
+
+if [ -d ${RUNDIR}/docker/mounts/${1}.mount ];then
+  rm -rf ${RUNDIR}/docker/mounts/${1}.mount
+fi
+
 if [ -d ${RUNDIR}/configs/${1}/src/ ];then
-  cp -R ${RUNDIR}/configs/${1}/src ${RUNDIR}/docker/${1}.mount
+  cp -R ${RUNDIR}/configs/${1}/src ${RUNDIR}/docker/mounts/${1}.mount
 else
   echo "Couldn't find directory ${RUNDIR}/configs/${1}/src/"
   exit 1 #Fail
 fi
 
-if [ ! -f "$RUNDIR/common/certkey.pem" ]
+if [ ! -f "$RUNDIR/common/secret_files/iag.certkey.pem" ]
 then
         echo "Keys not generated yet; calling creation script..."
-        $RUNDIR/common/create-cert.sh
+        $RUNDIR/common/create-iag-crypto.sh
 fi
 
+docker rm -f iag-${1} > /dev/null 2>&1
+
 docker run -d --name iag-${1} \
-  -v ${RUNDIR}/docker/${1}.mount:/var/iag/config \
-  -v ${RUNDIR}/common/certkey.pem:/var/iag/config/crypto/front-end-cert-key \
-  -e CI_TENANT_HOST=${CI_TENANT_HOST} \
-  -e OIDC_CLIENT_ID=${OIDC_CLIENT_ID} \
-  -e OIDC_CLIENT_SECRET=${OIDC_CLIENT_SECRET} \
+  -v ${RUNDIR}/docker/mounts/${1}.mount:/var/iag/config \
+  -v ${RUNDIR}/common/secret_files:/var/iag/config/secret_files \
+  -v ${RUNDIR}/common/env_files:/var/iag/config/env_files \
+  --env-file=${RUNDIR}/common/config.properties \
   -p ${2}:8443 \
   ibmcom/ibm-application-gateway:19.12
+if [ $? -eq 0 ];then
+  echo "Logs for container... Ctrl-c will not terminate container."
+  docker logs -f iag-${1}
+fi

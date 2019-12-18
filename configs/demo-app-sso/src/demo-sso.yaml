@@ -52,3 +52,22 @@ identity:
     client_id: $OIDC_CLIENT_ID
     client_secret: $S_OIDC_CLIENT_SECRET
     hostname: $CI_TENANT_HOST
+
+resource_servers:
+  - path: "/demo"
+    connection_type: "ssl"
+    transparent_path: false
+    servers:
+      - host: $DEMOAPP_HOSTNAME
+        port: 1443
+        ssl:
+          certificate: "@env_files/demoapp.cert.pem"
+    mutual_auth:
+      basic_auth:
+        username: iag
+        password: $S_DEMOAPP_BASIC_PW
+    identity_headers:
+      #basic_auth: supply
+      attributes:
+        - attribute: preferred_username
+          header: iv-user

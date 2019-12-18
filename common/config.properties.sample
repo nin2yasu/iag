@@ -1,0 +1,30 @@
+# This file contains environment-specific properties to be referenced in
+# IAG configurations.
+
+# In Docker, all these are passed directly as environment variables.
+
+# In OpenShift:
+#   Properties starting with S_ will be created in iag Secret in Openshift
+#   Other properties will be created in iag configMap in OpenShift
+# All are then loaded into environment variables.
+
+############################
+# Common
+
+# Hostname of Cloud Identity Tenant
+CI_TENANT_HOST=xxxxxxx.ice.ibmcloud.com
+
+# Client ID of Custom OIDC Application in Cloud Identity Tenant
+OIDC_CLIENT_ID=
+
+# Client Secret of Custom OIDC Application in Cloud Identity Tenant
+S_OIDC_CLIENT_SECRET=
+
+#############################
+# Demo App SSO
+
+# Demo Application Hostname (for junction creation)
+# DEMOAPP_HOSTNAME=192.168.42.42
+
+# Demo Application BA Password for trust basis
+# S_DEMOAPP_BASIC_PW=something-hard-to-guess

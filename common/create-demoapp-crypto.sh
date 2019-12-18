@@ -8,9 +8,7 @@ if [ -z "$RUNDIR" ] ; then
   exit 1  # fail
 fi
 
-pushd ${RUNDIR}
-openssl req -newkey rsa -nodes -config cert_config -x509 -out cert.pem -days 730
-cat cert.pem key.pem > certkey.pem
-echo -n B64::
-cat certkey.pem | base64
+pushd ${RUNDIR}/demoapp
+openssl req -newkey rsa -nodes -config ../demoapp_cert_config -x509 -out demoapp.cert.pem -days 730
 popd
+cp ${RUNDIR}/demoapp/demoapp.cert.pem ${RUNDIR}/env_files

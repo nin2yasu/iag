@@ -1,21 +1,21 @@
 [ req ]
 prompt             = no
 default_bits       = 2048
-default_keyfile    = key.pem
+default_keyfile    = demoapp.key.pem
 attributes         = myattributes
 x509_extensions    = myx509extensions
 distinguished_name = mydn
 req_extensions     = myreqextensions
 
 [ mydn ]
-commonName       = www.iamlab.ibm.com
+commonName       = demoapp.iamlab.ibm.com
 countryName      = US
 organizationName = IAMLAB Test Only
 
 [ myattributes ]
 
 [ alternatenames ]
-DNS.1            = www.iamlab.ibm.com
+DNS.1            = demoapp.iamlab.ibm.com
 
 [ myreqextensions ]
 

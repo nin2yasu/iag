@@ -27,7 +27,7 @@ version: 19.12
 server:
   ssl:
     front_end:
-      certificate: "@crypto/front-end-cert-key"
+      certificate: "@secret_files/iag.certkey.pem"
   #
   # Enable the inbuilt credential viewer application.  The 'enable_html'
   # configuration entry will control whether the HTML file is enabled in
@@ -62,5 +62,5 @@ server:
 identity:
   ci_oidc:
     client_id: $OIDC_CLIENT_ID
-    client_secret: $OIDC_CLIENT_SECRET
+    client_secret: $S_OIDC_CLIENT_SECRET
     hostname: $CI_TENANT_HOST
