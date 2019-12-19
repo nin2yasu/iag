@@ -8,7 +8,11 @@ if [ -z "$RUNDIR" ] ; then
   exit 1  # fail
 fi
 
-pushd ${RUNDIR}/demoapp
+# Enter the demoapp directory
+cd ${RUNDIR}/demoapp
+
+# Create a new RSA keypair and create self-signed x509 cert.
 openssl req -newkey rsa -nodes -config ../demoapp_cert_config -x509 -out demoapp.cert.pem -days 730
-popd
+
+# Copy the certificate to env_files (so IAG will receive it as a file)
 cp ${RUNDIR}/demoapp/demoapp.cert.pem ${RUNDIR}/env_files
