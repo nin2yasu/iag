@@ -9,12 +9,15 @@ dotenv.config();
 
 // Handle GET request for login page
 router.get('/', function(req, res, _next) {
-
-  // Render the login page.  The QR Code image is sent (base64 encoded)
-  // in qrCode.  It is rendered directly on the page.
-  res.render('userlogin', {
-    title: 'Login',
-  });
+  if (req.session.authenticated) {
+    res.redirect('/userhome');
+  } else {
+    // Render the login page.  The QR Code image is sent (base64 encoded)
+    // in qrCode.  It is rendered directly on the page.
+    res.render('userlogin', {
+      title: 'Login',
+    });
+  }
 });
 
 // Handle POST to /userlogin/pwdcheck
@@ -31,12 +34,17 @@ router.post('/pwdcheck', function(req, res, _next) {
       // Mark session authenticated
       req.session.authenticated = true
       // Populate user in session
-      req.session.user = { "id": process.env.TEST_USER_ID,
-                           "userName": process.env.TEST_USER_ID,
-                           "name": process.env.TEST_USER_ID,
-                           "emails": [{"value":"Not Provided"}],
-                           "phoneNumbers": [{"value":"Not Provided"}]
-                         };
+      req.session.user = {
+        "id": process.env.TEST_USER_ID,
+        "userName": process.env.TEST_USER_ID,
+        "name": process.env.TEST_USER_ID,
+        "emails": [{
+          "value": "Not Provided"
+        }],
+        "phoneNumbers": [{
+          "value": "Not Provided"
+        }]
+      };
 
       // If a post-authentication target available in session
       if (req.session.afterlogin) {

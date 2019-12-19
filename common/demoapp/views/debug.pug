@@ -16,5 +16,16 @@ block content
               tr
                 td #{name}
                 td #{val}
+    .panel.mtm
+      .panel-header
+        center
+          h3 Header Details
+        |
+        .panel-body
+          table
+            each val, name in headersJson
+              tr
+                td #{name}
+                td #{val}
     .top-right
       a(href='/logout') Logout

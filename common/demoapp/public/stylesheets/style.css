@@ -114,10 +114,41 @@ input {
 .login-form input[type="password"]::placeholder{
   font-style: italic;
 }
+
 a{
   font-family: 'Roboto', sans-serif;
   font-size: 18px;
 }
+
+table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid black;
+    padding: 10px;
+}
+
+td:first-child {
+    width: 200px;
+}
+
+td:hover {
+  white-space: normal;
+  word-break: keep-all;
+  word-wrap: break-word;
+  overflow:visible;
+}
+td {
+    white-space: nowrap;
+    text-overflow:ellipsis;
+    overflow: hidden;
+    border-collapse: collapse;
+    border: 1px solid black;
+    padding: 10px;
+}
+
+tr:nth-child(even) {background-color: #f2f2f2;}
+
 .top-right {
   position: absolute;
   top: 10px;

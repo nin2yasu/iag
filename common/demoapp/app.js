@@ -14,6 +14,7 @@ const userlogin = require('./routes/userlogin');
 const userhome = require('./routes/userhome');
 const profile = require('./routes/profile');
 const logout = require('./routes/logout');
+const debug = require('./routes/debug');
 
 var app = express();
 
@@ -65,20 +66,24 @@ app.use((req, _res, next) => {
 
       // Mark session authenticated
       req.session.authenticated = true
+
+
+     var attributes = ["clientip","acr","email","family_name","given_name","mobile_number","groupids",
+                       "id_token","realmName","tenantId","uid"]
+
       // Populate user in session
       req.session.user = {
-        "id": req.headers['iv-user'],
+        "id": req.headers['uid'],
         "userName": req.headers['iv-user'],
-        "name": req.headers['iv-user'],
-        "emails": [{
-          "value": "Not Provided"
-        }],
-        "phoneNumbers": [{
-          "value": "Not Provided"
-        }]
+        "name": req.headers['displayname'],
       };
+
+      for (attr of attributes) {
+        req.session.user[attr] = req.headers[attr.toLowerCase()];
+      }
     }
   }
+
   return next()
 })
 
@@ -88,6 +93,7 @@ app.use('/userlogin', userlogin);
 app.use('/userhome', userhome);
 app.use('/profile', profile);
 app.use('/logout', logout);
+app.use('/debug', debug);
 
 // catch 404 and forward to error handler
 app.use(function(_req, _res, next) {

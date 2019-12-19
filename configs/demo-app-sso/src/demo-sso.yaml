@@ -67,7 +67,19 @@ resource_servers:
         username: iag
         password: $S_DEMOAPP_BASIC_PW
     identity_headers:
-      #basic_auth: supply
       attributes:
         - attribute: preferred_username
           header: iv-user
+        - attribute: AZN_CRED_NETWORK_ADDRESS_STR
+          header: clientip
+        - attribute: acr
+        - attribute: displayName
+        - attribute: email
+        - attribute: mobile_number
+        - attribute: family_name
+        - attribute: given_name
+        - attribute: groupIds
+        - attribute: id_token
+        - attribute: realmName
+        - attribute: tenantId
+        - attribute: uid

@@ -12,8 +12,7 @@ router.get('/', function(req, res, _next) {
     // Display Home Page
     res.render('userhome', {
       title: 'User Homepage',
-      displayName: req.session.user.name,
-      userid: req.session.user.id
+      displayName: req.session.user.given_name
     });
   }
 });
