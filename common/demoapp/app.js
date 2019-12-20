@@ -15,6 +15,7 @@ const userhome = require('./routes/userhome');
 const profile = require('./routes/profile');
 const logout = require('./routes/logout');
 const debug = require('./routes/debug');
+const page = require('./routes/page');
 
 var app = express();
 
@@ -42,7 +43,7 @@ app.use(express.urlencoded({
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use((req, _res, next) => {
+app.use((req, res, next) => {
 
   if (!req.session.authenticated) {
     // Check for BA Header and asserted user id
@@ -83,7 +84,7 @@ app.use((req, _res, next) => {
       }
     }
   }
-
+  res.set('Cache-Control','no-store');
   return next()
 })
 
@@ -94,6 +95,7 @@ app.use('/userhome', userhome);
 app.use('/profile', profile);
 app.use('/logout', logout);
 app.use('/debug', debug);
+app.use('/page', page);
 
 // catch 404 and forward to error handler
 app.use(function(_req, _res, next) {
