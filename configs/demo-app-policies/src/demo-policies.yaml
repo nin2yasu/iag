@@ -36,6 +36,25 @@ policies:
       rule: "anyuser"
       action: "permit"
 
+    - name: "authenticated_users"
+      paths:
+        - "/cred-viewer"
+        - "/demo/logout"
+        - "/demo/profile"
+        - "/demo/userhome"
+        - "/demo/page/limited"
+        - "/demo/page/limited/*"
+        - "/demo/page/allowed"
+        - "/demo/page/allowedpath/*"
+      rule: "anyauth"
+      action: "permit"
+
+    - name: "default_deny"
+      paths:
+        - "*"
+      rule: "()"
+      action: "deny"
+
   rate_limiting:
     - name: "limited_by_ip"
       paths:
