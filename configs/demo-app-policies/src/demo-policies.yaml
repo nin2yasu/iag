@@ -111,3 +111,28 @@ policies:
         - "/demo/userlogin/pwdcheck"
       rule: "anyuser"
       action: "permit"
+
+  rate_limiting:
+    - name: "limited_by_ip"
+      paths:
+        - "/demo/page/limited"
+        - "/demo/page/limited/*"
+      methods:
+        - "*"
+      rule: |
+        credential: 'AZN_CRED_PRINCIPAL_NAME = "*"'
+        ip: false
+        capacity: 3
+        interval: 10
+        reaction: TEMPLATE
+        
+    - name: "hard_limit_by_ip"
+      paths:
+        - "/demo/page/limited/hard"
+      methods:
+        - "*"
+      rule: |
+        ip: true
+        capacity: 5
+        interval: 10
+        reaction: CLOSE
