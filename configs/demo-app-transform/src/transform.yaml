@@ -1,0 +1,54 @@
+version: 19.12
+
+#
+# Configuration for an IAG container.
+#
+# This file specifies HTTP Transformation rules and response content
+# injection policies.  It is designed to be used with a configuration file
+# specifying basic configuration.
+#
+
+policies:
+
+  #
+  # An HTTP transformation policy, applied to all
+  # resources, which will add the 'IAG_HTTP_XFORM_RESP: HELLO_WORLD'
+  # HTTP header to all responses.
+  #
+
+  http_transformations:
+    response:
+      - name: "ResponseHeaderInjector"
+        method: "*"
+        paths:
+          - "*"
+        rule: |
+          <?xml version="1.0" encoding="UTF-8"?>
+          <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+
+          <xsl:strip-space elements="*" />
+
+          <xsl:template match="/">
+            <HTTPResponseChange>
+              <xsl:apply-templates />
+            </HTTPResponseChange>
+          </xsl:template>
+
+          <xsl:template match="//HTTPRequest/Headers">
+            <Header action="add" name="IAG_HTTP_XFORM_RESP">HELLO_WORLD</Header>
+          </xsl:template>
+
+          </xsl:stylesheet>
+
+  #
+  # A content injection policy, applied to the / resource, which will
+  # add a link to the demo app to the standard home page.  This is a
+  # contrived example but shows how the functionality works.
+  #
+
+  content_injection:
+    - name: "content_injection_1"
+      paths:
+        - "/"
+      location: "*span*"
+      content: "<a href=\"/demo/userhome\">Demo Home</a><br/>"
