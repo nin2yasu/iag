@@ -2,11 +2,9 @@ version: 19.12
 
 #
 # Configuration for an IAG container. In addition to basic configuration, this
-# file specifies custom management, error, and local pages which are made
-# available as zip files.
-#
-# These zip files could be mounted to the container (via a configMap for
-# example) or baked into a custom build iamge.
+# file specifies a junction to a demonstration application.  It also configures
+# a failover cookie to maintain authenticated state between a cluster of IAG
+# instances.
 #
 
 server:
@@ -31,6 +29,17 @@ server:
   ssl:
     front_end:
       certificate: "@secret_files/iag.certkey.pem"
+
+  #
+  # Enable failover using an encrypted cookie.  The 64 byte key is loaded
+  # from the specified file. The file was generated using command:
+  # openssl rand -out iag.failover.key 64
+  #
+
+  failover:
+    key: "@secret_files/iag.failover.key"
+    cookie_name: "IAG-CLUSTER"
+
   #
   # Enable the inbuilt credential viewer application.  The 'enable_html'
   # configuration entry will control whether the HTML file is enabled in
@@ -41,18 +50,6 @@ server:
     cred_viewer:
       path_segment: "cred-viewer"
       enable_html: true
-
-  local_pages:
-    content: "@local_pages.zip"
-    type: zip
-
-  error_pages:
-    content: "@error_pages.zip"
-    type: zip
-
-  management_pages:
-    content: "@management_pages.zip"
-    type: zip
 
 #
 # Specify an IBM Cloud Identity tenant as the identity provider for the
@@ -67,3 +64,34 @@ identity:
     client_id: $OIDC_CLIENT_ID
     client_secret: $S_OIDC_CLIENT_SECRET
     hostname: $CI_TENANT_HOST
+
+resource_servers:
+  - path: "/demo"
+    connection_type: "ssl"
+    transparent_path: false
+    servers:
+      - host: $DEMOAPP_HOSTNAME
+        port: 1443
+        ssl:
+          certificate: "@env_files/demoapp.cert.pem"
+    mutual_auth:
+      basic_auth:
+        username: iag
+        password: $S_DEMOAPP_BASIC_PW
+    identity_headers:
+      attributes:
+        - attribute: preferred_username
+          header: iv-user
+        - attribute: AZN_CRED_NETWORK_ADDRESS_STR
+          header: clientip
+        - attribute: acr
+        - attribute: displayName
+        - attribute: email
+        - attribute: mobile_number
+        - attribute: family_name
+        - attribute: given_name
+        - attribute: groupIds
+        - attribute: id_token
+        - attribute: realmName
+        - attribute: tenantId
+        - attribute: uid

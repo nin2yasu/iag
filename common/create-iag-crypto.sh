@@ -21,3 +21,6 @@ cat iag.cert.pem iag.key.pem > secret_files/iag.certkey.pem
 # Remove the individual files - they are not required
 rm iag.key.pem
 rm iag.cert.pem
+
+# Generate a 64 byte (512 bit) failover key and store in secret_files as iag.failover.key
+openssl rand -out secret_files/iag.failover.key 64
