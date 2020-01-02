@@ -43,7 +43,7 @@ docker/iag-run.sh <config-directory> <publish host>:<port>
 
 For example:
 ```
-docker/iag-run.sh hello-world 127.0.0.1:443
+docker/iag-run.sh configs/hello-world 127.0.0.1:443
 ```
 
 The IAG is now running.  Use a browser to connect using the host and port you specified.

@@ -5,4 +5,5 @@ mounts
 node_modules
 common/secret_files/*
 common/env_files/*
+docker/files/*
 !*.keep
