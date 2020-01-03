@@ -15,7 +15,7 @@ policies:
         - "GET"
       paths:
         - "/demo/page/admin/readinfo"
-      rule: "anyuser"
+      rule: "anyauth"
       action: "permit"
 
     - name: "admin_access"
@@ -56,7 +56,7 @@ policies:
       action: "deny"
 
   rate_limiting:
-    - name: "limited_by_ip"
+    - name: "limited_by_user"
       paths:
         - "/demo/page/limited"
         - "/demo/page/limited/*"
