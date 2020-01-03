@@ -10,15 +10,15 @@ version: 19.12
 
 policies:
 
-  #
-  # An HTTP transformation policy, applied to all
-  # resources, which will add the 'IAG_HTTP_XFORM_RESP: HELLO_WORLD'
-  # HTTP header to all responses.
-  #
-
   http_transformations:
     response:
-      - name: "ResponseHeaderInjector"
+
+        #
+        # An HTTP transformation policy, applied to all
+        # resources, which will add the 'IAG_HTTP_XFORM_RESP: HELLO_WORLD'
+        # HTTP header to all responses.
+        #
+      - name: "AddResponseHeader"
         method: "*"
         paths:
           - "*"
@@ -36,6 +36,44 @@ policies:
 
           <xsl:template match="//HTTPRequest/Headers">
             <Header action="add" name="IAG_HTTP_XFORM_RESP">HELLO_WORLD</Header>
+          </xsl:template>
+
+          </xsl:stylesheet>
+
+    request:
+
+        #
+        # An HTTP transformation policy, applied to all
+        # resources, which will add the URI of the request to a header
+        # called myuri.
+        #
+      - name: "AddUriToHeader"
+        method: "*"
+        paths:
+          - "*"
+        rule: |
+          <?xml version="1.0" encoding="UTF-8"?>
+          <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+
+          <xsl:strip-space elements="*" />
+
+          <xsl:variable name="varUriGlobal">
+           <xsl:value-of select="//HTTPRequest/RequestLine/URI"/>
+          </xsl:variable>
+
+          <xsl:template match="/">
+            <HTTPRequestChange>
+              <xsl:apply-templates />
+            </HTTPRequestChange>
+          </xsl:template>
+
+          <xsl:template match="//HTTPRequest/Headers">
+          <xsl:choose>
+            <xsl:when test="Header/@name='myuri'" />
+            <xsl:otherwise>
+              <Header action="add" name="myuri"><xsl:value-of select="$varUriGlobal"/></Header>
+            </xsl:otherwise>
+          </xsl:choose>
           </xsl:template>
 
           </xsl:stylesheet>
