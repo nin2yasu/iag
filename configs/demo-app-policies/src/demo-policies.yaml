@@ -22,8 +22,8 @@ policies:
       paths:
         - "/demo/page/admin"
         - "/demo/page/admin/*"
-      rule: not (any groupIds = "admin")
-      action: "deny"
+      rule: any groupIds = "admin"
+      action: "permit"
 
     - name: "public"
       paths:
