@@ -61,7 +61,7 @@ resource_servers:
     transparent_path: false
     servers:
       - host: $DEMOAPP_HOSTNAME
-        port: 1443
+        port: $DEMOAPP_PORT
         ssl:
           certificate: "@env_files/demoapp.cert.pem"
     mutual_auth:

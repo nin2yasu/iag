@@ -26,5 +26,8 @@ S_OIDC_CLIENT_SECRET=
 # Demo Application Hostname (for junction creation)
 # DEMOAPP_HOSTNAME=192.168.42.42
 
+# Demo Application Port (for junction creation)
+# DEMOAPP_PORT=1443
+
 # Demo Application BA Password for trust basis
 # S_DEMOAPP_BASIC_PW=something-hard-to-guess
