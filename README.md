@@ -97,12 +97,12 @@ openshift/create-iag-assets.sh
 ```
 
 ### Option 1: Deploy using local ConfigMap
-In this case you load your configuration into an entry of a ConfigMap object.  This ConfigMap is then mounted to the /var/iag/config directory of the IAG container.
+In this case you load your configuration assets into entries of a ConfigMap object.  This ConfigMap is then mounted to the /var/iag/config directory of the IAG container.
 
 #### Create Config Map
 Create a config map containing your configuration:
 ```
-oc create configmap iag-config --from-file configs/hello-world/src/hello-world.yaml
+oc create configmap iag-config --from-file=configs/hello-world/src/
 ```
 
 #### Install Template
@@ -130,12 +130,57 @@ Now open the OpenShift UI (e.g. https://localhost:8443), select project, and go 
 
 
 ### Clean up IAG Assets
-You can uninstall all assets associated with the IAG (iag is default app name) using command:
+You can uninstall all assets associated with the IAG (iag is default app name) using these commands:
 ```
 oc delete all -l app=iag
-oc delete secret -l app=iag
 oc delete secret iag
 oc delete configmap iag
+```
+
+## Kubernetes
+Kubernetes assets are in the kubernetes folder.
+If you want to build an OpenShift test system you can use these assets:
+  - Kubernetes on Centos 7 (https://ibm.biz/isamkubebuild)
+
+### Create deployment assets
+A script is provided that will create a Secret and ConfigMap from environment specific information.  The iag Secret will contain:
+- All files in the common/secret_files folder
+- All attributes from common/config.properties that start S_
+
+The iag ConfigMap will contain:
+- All files in the common/env_files folder
+- All attributes from the common/config.properties that do not start S_
+
+The iag.certkey.pem file is required in the common/secrets folder. If it doesn't exist, the create-iag-crypto.sh script will be called to generate it.
+
+```
+kubernetes/create-iag-assets.sh
+```
+
+### Create Config Map
+You will load your configuration assets into entries of a ConfigMap object.  This ConfigMap is then mounted to the /var/iag/config directory of the IAG container.
+
+### Create Config Map
+Create a config map containing your configuration:
+```
+kubectl create configmap iag-config --from-file=configs/hello-world/src/
+```
+
+### Create Deployment, Service, and Ingress
+Create the Kubernetes assets using the provided YAML file:
+```
+kubectl create -f kubernetes/iag.yaml
+```
+
+### Clean up IAG Assets
+You can uninstall all assets associated with the IAG using these commands:
+```
+kubectl delete deploy iag
+kubectl delete service iag
+kubectl delete ingress iag
+kubectl delete secret iag
+kubectl delete configmap iag
+kubectl delete configmap iag-config
 ```
 
 ## Demo Application
