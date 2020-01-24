@@ -160,7 +160,6 @@ kubernetes/create-iag-assets.sh
 ### Create Config Map
 You will load your configuration assets into entries of a ConfigMap object.  This ConfigMap is then mounted to the /var/iag/config directory of the IAG container.
 
-### Create Config Map
 Create a config map containing your configuration:
 ```
 kubectl create configmap iag-config --from-file=configs/hello-world/src/
