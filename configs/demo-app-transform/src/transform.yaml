@@ -78,14 +78,37 @@ policies:
 
           </xsl:stylesheet>
 
-  #
-  # A content injection policy, applied to the / resource, which will
-  # add a link to the demo app to the standard home page.  This is a
-  # contrived example but shows how the functionality works.
-  #
-
   content_injection:
+
+      #
+      # A content injection policy, applied to the /demo/userhome resource, which
+      # will replace the welcome message displayed to the user.
+      #
     - name: "content_injection_1"
+      paths:
+        - "/demo/userhome"
+      location: "Welcome"
+      full_line_match: false
+      replace_match: true
+      content: "Well, hello there"
+
+      #
+      # A content injection policy, applied to the /demo/userhome resource, which
+      # will add a link to IBM.COM to the page.
+      #
+    - name: "content_injection_2"
+      paths:
+        - "/demo/userhome"
+      location: "<a href=\"/profile\">"
+      full_line_match: false
+      content: "<a target=\"_newtab\" href=\"https://ibm.com\">IBM.COM</a> "
+
+      #
+      # A full line matching content injection policy, applied to the / resource,
+      # which will add a link to the demo app to the standard home page.
+      # This is a contrived example but shows how the functionality works.
+      #
+    - name: "content_injection_3"
       paths:
         - "/"
       location: "*span*"
