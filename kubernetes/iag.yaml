@@ -58,7 +58,7 @@ spec:
                 name: iag
             - secretRef:
                 name: iag
-          image: docker.io/ibmcom/ibm-application-gateway:19.12
+          image: docker.io/ibmcom/ibm-application-gateway:20.01
           imagePullPolicy: IfNotPresent
           name: iag
           ports:
@@ -91,7 +91,7 @@ spec:
         volumes:
         - name: iag-config
           configMap:
-            name: iag-config 
+            name: iag-config
         - name: iag-secret-files
           secret:
             secretName: iag
@@ -139,4 +139,3 @@ spec:
         backend:
           serviceName: iag
           servicePort: 443
-
