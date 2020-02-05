@@ -140,7 +140,7 @@ oc delete configmap iag
 
 ## Kubernetes
 Kubernetes assets are in the kubernetes folder.
-If you want to build an OpenShift test system you can use these assets:
+If you want to build a Kubernetes test system you can use this asset:
   - Kubernetes on Centos 7 (https://ibm.biz/isamkubebuild)
 
 ### Create deployment assets
