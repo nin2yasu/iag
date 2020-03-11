@@ -56,6 +56,17 @@ policies:
       action: "deny"
 
   rate_limiting:
+    - name: "hard_limit_by_ip"
+      paths:
+        - "/demo/page/limited/hard"
+      methods:
+        - "*"
+      rule: |
+        ip: true
+        capacity: 5
+        interval: 10
+        reaction: CLOSE
+
     - name: "limited_by_user"
       paths:
         - "/demo/page/limited"
@@ -68,14 +79,3 @@ policies:
         capacity: 3
         interval: 10
         reaction: TEMPLATE
-
-    - name: "hard_limit_by_ip"
-      paths:
-        - "/demo/page/limited/hard"
-      methods:
-        - "*"
-      rule: |
-        ip: true
-        capacity: 5
-        interval: 10
-        reaction: CLOSE
