@@ -1,11 +1,11 @@
 # IBM Application Gateway Deployment Assets
 These are my assets for deploying the IBM Application Gateway (IAG).
-These assets are for version 20.01.
+These assets are for version 20.09.
 
 These assets are used in my IAG Deployment cookbook: https://ibm.biz/iagcookbook
 
-## Cloud Identity configuration
-The IBM Application Gateway requires an IBM Cloud Identity Tenant for authentication.
+## Verify configuration
+The IBM Application Gateway requires an IBM Verify Tenant for authentication.
 For information on setting up a free trial tenant, check out https://ibm.biz/cloudidcookbook (Exercises 1 and 2).
 
 You will need to configure a Custom Application with these settings:
@@ -75,11 +75,11 @@ A "Hello World" OpenShift template is provided which can be deployed to test the
 oc create -f openshift/iag-hello-world.yaml
 ```
 
-Once you have created this template, use the OpenShift console to deploy it.  you will need to complete the CI Tenant Hostname, OIDC Client ID,
+Once you have created this template, use the OpenShift console to deploy it.  you will need to complete the Verify OIDC Discovery Endpoint, OIDC Client ID,
 and OIDC Client Secret in the template deployment wizard.
 
-Once deployed, use the Route to connect to the IAG.  You will be redirected to your Cloud Identity tenant to authenticate.
-Once authenticated, you can request the `/cred-viewer` url to see the attributes provided by Cloud Identity.
+Once deployed, use the Route to connect to the IAG.  You will be redirected to your Verify tenant to authenticate.
+Once authenticated, you can request the `/cred-viewer` url to see the attributes provided by Verify.
 e.g. https://iag-hello-world.127.0.0.1.nip.io/cred-viewer
 
 ### Common: Create deployment assets

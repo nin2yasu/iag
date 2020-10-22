@@ -12,7 +12,7 @@
 # Common
 
 # Hostname of Cloud Identity Tenant
-CI_TENANT_HOST=xxxxxxx.ice.ibmcloud.com
+OIDC_DISCOVERY_ENDPOINT=https://xxxxx.verify.ibm.com/oidc/endpoint/default/.well-known/openid-configuration
 
 # Client ID of Custom OIDC Application in Cloud Identity Tenant
 OIDC_CLIENT_ID=

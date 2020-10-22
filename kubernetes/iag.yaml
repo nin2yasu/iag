@@ -58,7 +58,7 @@ spec:
                 name: iag
             - secretRef:
                 name: iag
-          image: docker.io/ibmcom/ibm-application-gateway:20.01
+          image: docker.io/ibmcom/ibm-application-gateway:20.09
           imagePullPolicy: IfNotPresent
           name: iag
           ports:

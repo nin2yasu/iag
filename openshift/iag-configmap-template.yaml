@@ -148,7 +148,7 @@ parameters:
   - displayName: IAG Version
     description: IAG Version to be deployed
     name: IAG_VERSION
-    value: "20.01"
+    value: "20.09"
   - displayName: Application Name
     description: Application Name in OpenShift
     name: APP_NAME
