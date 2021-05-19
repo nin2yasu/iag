@@ -1,6 +1,6 @@
 # IBM Application Gateway Deployment Assets
 These are my assets for deploying the IBM Application Gateway (IAG).
-These assets are for version 20.09.
+These assets are for version 21.04.
 
 These assets are used in my IAG Deployment cookbook: https://ibm.biz/iagcookbook
 
