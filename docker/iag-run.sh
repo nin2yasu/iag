@@ -61,7 +61,7 @@ docker run -d --name iag-${CONFIG_NAME} \
   -v ${RUNDIR}/common/env_files:/var/iag/config/env_files \
   --env-file=${RUNDIR}/common/config.properties \
   -p ${2}:8443 \
-  ibmcom/ibm-application-gateway:20.01
+  ibmcom/ibm-application-gateway:21.04
 
 # If container started, tail the log
 if [ $? -eq 0 ];then

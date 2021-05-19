@@ -51,10 +51,10 @@ server:
 #
 
 identity:
-  ci_oidc:
+  oidc:
+    discovery_endpoint: $OIDC_DISCOVERY_ENDPOINT
     client_id: $OIDC_CLIENT_ID
     client_secret: $S_OIDC_CLIENT_SECRET
-    hostname: $CI_TENANT_HOST
 
 resource_servers:
   - path: "/demo"
