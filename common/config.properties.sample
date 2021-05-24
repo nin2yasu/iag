@@ -11,13 +11,13 @@
 ############################
 # Common
 
-# Hostname of Cloud Identity Tenant
+# Discovery endpoint for OIDC
 OIDC_DISCOVERY_ENDPOINT=https://xxxxx.verify.ibm.com/oidc/endpoint/default/.well-known/openid-configuration
 
-# Client ID of Custom OIDC Application in Cloud Identity Tenant
+# Client ID for OpenID Connect
 OIDC_CLIENT_ID=
 
-# Client Secret of Custom OIDC Application in Cloud Identity Tenant
+# Client Secret for OpenID Connect
 S_OIDC_CLIENT_SECRET=
 
 #############################
