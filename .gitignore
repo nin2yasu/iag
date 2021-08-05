@@ -1,5 +1,5 @@
 .DS_Store
-common/demoapp/*.pem
+#common/demoapp/*.pem
 config.properties
 mounts
 node_modules
